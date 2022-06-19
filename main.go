@@ -12,9 +12,24 @@ func main() {
 	if err != nil {
 		fmt.Printf("An error occurred setting twitter handler: %s", err.Error())
 	}
-	println(p.TwitterHandler())
-	println(p.TwitterHandler().RedirectUrl())
-	println(p.ID())
-	println(p.Country())
-	println(p.FullName())
+
+	name1 := Name{First: "Ben", Last: "Smith"}
+	name2 := otherName{First: "Ben2", Last: "Smith"}
+
+	if name1 == name2 {
+		fmt.Println("We match")
+	}
+}
+
+type Name struct {
+	First string
+	Last  string
+	// Middle []string
+	// Middle func
+	// Middle map[string]string
+}
+
+type otherName struct {
+	First string
+	Last  string
 }
