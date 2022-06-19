@@ -22,14 +22,42 @@ type Identifiable interface {
 	ID() string
 }
 
+type Citizen interface {
+	Identifiable
+	Country() string
+}
+
 type socialSecurityNumber string
 
-func NewSocialSecurityNumber(value string) Identifiable {
+func NewSocialSecurityNumber(value string) Citizen {
 	return socialSecurityNumber(value)
 }
 
 func (ssn socialSecurityNumber) ID() string {
 	return string(ssn)
+}
+
+func (ssn socialSecurityNumber) Country() string {
+	return "United States"
+}
+
+type europeanUnionIdentifier struct {
+	id      string
+	country string
+}
+
+func NewEuropeanUnionIdentifier(id, country string) Citizen {
+	return europeanUnionIdentifier{
+		id:      id,
+		country: country,
+	}
+}
+
+func (eui europeanUnionIdentifier) ID() string {
+	return eui.id
+}
+func (eui europeanUnionIdentifier) Country() string {
+	return fmt.Sprintf("Eu: %s", eui.country)
 }
 
 type Name struct {
@@ -48,21 +76,21 @@ type Employee struct {
 type Person struct {
 	Name
 	twitterHandler TwitterHandler
-	Identifiable
+	Citizen
 }
 
-func NewPerson(firstName, lastName string, Identifiable Identifiable) Person {
+func NewPerson(firstName, lastName string, citizen Citizen) Person {
 	return Person{
 		Name: Name{
 			first: firstName,
 			last:  lastName,
 		},
-		Identifiable: Identifiable,
+		Citizen: citizen,
 	}
 }
 
 func (p *Person) ID() string {
-	return fmt.Sprintf("Person's identifier: %s", p.Identifiable.ID())
+	return fmt.Sprintf("Person's identifier: %s", p.Citizen.ID())
 }
 
 func (p *Person) SetTwitterHandler(handler TwitterHandler) error {
