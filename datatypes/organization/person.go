@@ -7,10 +7,10 @@ import (
 	"strings"
 )
 
-type Handler struct {
-	handle string
-	name   string
-}
+// type Handler struct {
+// 	handle string
+// 	name   string
+// }
 
 type TwitterHandler string
 
@@ -47,6 +47,7 @@ type europeanUnionIdentifier struct {
 	country string
 }
 
+// be careful with interface{}
 func NewEuropeanUnionIdentifier(id interface{}, country string) Citizen {
 	switch v := id.(type) {
 	case string:
@@ -59,6 +60,11 @@ func NewEuropeanUnionIdentifier(id interface{}, country string) Citizen {
 			id:      strconv.Itoa(v),
 			country: country,
 		}
+	case europeanUnionIdentifier:
+		return v
+	case Person:
+		euID, _ := v.Citizen.(europeanUnionIdentifier)
+		return euID
 	default:
 		panic("using an invalid type to initialize EU identifier")
 	}
