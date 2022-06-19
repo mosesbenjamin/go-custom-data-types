@@ -14,7 +14,8 @@ type Handler struct {
 type TwitterHandler string
 
 func (th TwitterHandler) RedirectUrl() string {
-	return ""
+	cleanHandler := strings.TrimPrefix(string(th), "@")
+	return fmt.Sprintf("https://twitter.com/%s", cleanHandler)
 }
 
 type Identifiable interface {
